@@ -6,7 +6,34 @@ module.exports = (robot) => {
 
 
   robot.hear(/hello/, [], (res)=>{
-    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false});
+    robot.adapter.client.web.chat.postMessage({
+      channel: res.message.room,
+      text: 'Hello there',
+      attachments: [
+        {
+          "fallback": "Required plain-text summary of the attachment.",
+          "color": "#36a64f",
+          "author_name": "Bobby Tables",
+          "author_link": "http://flickr.com/bobby/",
+          "author_icon": "http://flickr.com/icons/bobby.jpg",
+          "title": "Slack API Documentation",
+          "title_link": "https://api.slack.com/",
+          "text": "Optional text that appears within the attachment",
+          "fields": [
+            {
+              "title": "Priority",
+              "value": "High",
+              "short": false
+            }
+          ],
+          "image_url": "http://my-website.com/path/to/image.jpg",
+          "thumb_url": "http://example.com/path/to/thumb.png",
+          "footer": "Slack API",
+          "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
+          "ts": 123456789
+        }
+      ]
+    });
   });
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/.*/g;
