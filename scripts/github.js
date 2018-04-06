@@ -1,6 +1,6 @@
 module.exports = (robot) => {
 
-  robot.hear(/hello/, [], (msg)=>{
+  robot.hear(/https:\/\/github.com\/[^\/]*\/[^\/]*\/pull/(\d+)\/.*/g, [], (msg)=> {
     msg.reply("world");
   });
 
