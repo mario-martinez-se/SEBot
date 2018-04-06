@@ -42,7 +42,7 @@ module.exports = (robot) => {
     };
 
     msgData = {
-      channel: mgs.message.room,
+      channel: msg.message.room,
       text: "Latest changes",
       attachments: [
         {
