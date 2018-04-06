@@ -53,7 +53,7 @@ module.exports = (robot) => {
       ]
     };
 
-    msg.robot.adapter.customMessage(msgData);
+    msg.robot.adapter.postMessage(msgData);
 
 
     // if (owner && repo && number) {
