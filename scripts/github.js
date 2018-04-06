@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 require('dotenv').config();
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 module.exports = (robot) => {
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/.*/g;
@@ -13,14 +13,41 @@ module.exports = (robot) => {
     if (owner && repo && number) {
       rp({
         method: "GET",
-        uri: "https://api.github.com/repos/secretescapes/secret-escapes/pulls/2004",
+        uri: `https://api.github.com/repos/${owner}/${repo}/pulls/${number}`,
         headers: {
           "Authorization": `token ${GITHUB_TOKEN}`,
           "User-Agent": "SEBOT"
         }
-      }).then(data=> res.reply(data))
+      }).then(data=> res.reply({
+        "attachments": [
+          {
+            "fallback": "adding booking with flights to await payment job",
+            "color": "#36a64f",
+            "author_name": "Nelson Gallardo",
+            "author_link": "https://github.com/nelson687se",
+            "author_icon": "https://avatars2.githubusercontent.com/u/15727269?v=4",
+            "title": "adding booking with flights to await payment job",
+            "title_link": "https://github.com/secretescapes/secret-escapes/pull/2004",
+            "text": "Optional text that appears within the attachment",
+            "fields": [
+              {
+                "title": "Status",
+                "value": "Open",
+                "short": true
+              },
+              {
+                "title": "Lines changed",
+                "value": "+1234 -3123",
+                "short": true
+              }
+            ],
+            "image_url": "http://my-website.com/path/to/image.jpg",
+            "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
+            "ts": 123456789
+          }
+        ]
+      }))
     }
-    // res.reply(`${owner} - ${repo} - ${number}`);
   });
 
 };
