@@ -10,7 +10,7 @@ module.exports = (robot) => {
     const owner = match[1];
     const  repo = match[2];
     const number = match[3];
-
+  console.log("HELLO");
     const test = {
       "attachments": [
         {
