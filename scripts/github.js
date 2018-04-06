@@ -30,7 +30,7 @@ module.exports = (robot) => {
             },
             {
               "title": "Lines changed",
-              "value": "+1234 -3123"
+              "value": "+1234 -3123",
               "short": true
             }
           ],
