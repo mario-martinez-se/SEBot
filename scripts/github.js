@@ -52,7 +52,7 @@ module.exports = (robot) => {
         }
       ]
     };
-    msg.reply("HELLO")
+    msg.send("HELLO")
     // robot.adapter.client.web.chat.postMessage(msg.message.room, "This is a message!", {as_user: true, unfurl_links: false})
 
 
