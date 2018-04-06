@@ -6,7 +6,7 @@ module.exports = (robot) => {
 
 
   robot.hear(/hello/, [], (res)=>{
-    robot.adapter.client.web.chat.postMessage({ channel: res.message.room, text: 'Hello there' });
+    robot.adapter.client.web.chat.postMessage({ channel: res.message.room, text: 'Hello there', attachments: []});
   });
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/.*/g;
