@@ -41,17 +41,19 @@ module.exports = (robot) => {
       ]
     };
 
+    msg.robot.emit('slack-attachment', test);
 
-    if (owner && repo && number) {
-      rp({
-        method: "GET",
-        uri: `https://api.github.com/repos/${owner}/${repo}/pulls/${number}`,
-        headers: {
-          "Authorization": `token ${GITHUB_TOKEN}`,
-          "User-Agent": "SEBOT"
-        }
-      }).then(data=> res.emit('slack-attachment', test))
-    }
+
+    // if (owner && repo && number) {
+    //   rp({
+    //     method: "GET",
+    //     uri: `https://api.github.com/repos/${owner}/${repo}/pulls/${number}`,
+    //     headers: {
+    //       "Authorization": `token ${GITHUB_TOKEN}`,
+    //       "User-Agent": "SEBOT"
+    //     }
+    //   }).then(data=> res.emit('slack-attachment', test))
+    // }
   });
 
 };
