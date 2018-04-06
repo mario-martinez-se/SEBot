@@ -53,7 +53,7 @@ module.exports = (robot) => {
       ]
     };
 
-    msg.robot.adapter.postMessage(msgData);
+    robot.adapter.client.web.chat.postMessage(msgData);
 
 
     // if (owner && repo && number) {
