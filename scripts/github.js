@@ -53,7 +53,7 @@ module.exports = (robot) => {
       ]
     };
 
-    robot.adapter.client.web.chat.postMessage(msgData);
+    robot.adapter.client.web.chat.postMessage(msg.message.room, "This is a message!", {as_user: true, unfurl_links: false})
 
 
     // if (owner && repo && number) {
