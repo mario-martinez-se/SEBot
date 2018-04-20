@@ -20,7 +20,7 @@ module.exports = (robot) => {
 
 const jiraRequest = (issueId) => ({
   method: "GET",
-  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description`,
+  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description,created,status`,
   headers: {
     "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN, 'base64')}`,
     "User-Agent": "SEBOT",
@@ -41,19 +41,19 @@ const attachment = (data) => ({
   // "author_link": `${data.user.html_url}`,
   "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
   // "title_link": `${data.html_url}`,
-  "text": `${data.fields.description.substring(0, 80)}&#8230;`,
-  // "fields": [
-  //   {
-  //     "title": "Status",
-  //     "value": `${data.state}`,
-  //     "short": true
-  //   },
+  "text": `${data.fields.description.substring(0, 80)}...`,
+  "fields": [
+    {
+      "title": "Status",
+      "value": `${data.status.name}`,
+      "short": true
+    },
   //   {
   //     "title": "Lines changed",
   //     "value": `+${data.additions} -${data.deletions}`,
   //     "short": true
   //   }
-  // ],
-  "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
-  "ts": Date.parse(data.created_at)/1000
+  ],
+  "thumb_url": "https://luna1.co/5ad265.png",
+  "ts": Date.parse(data.fields.created)/1000
 });
