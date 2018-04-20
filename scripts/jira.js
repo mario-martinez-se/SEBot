@@ -16,7 +16,7 @@ module.exports = (robot) => {
       console.log(`Found ${res.match[0]}: ${value}`);
       if (!value) {
         console.log(`Saving ${res.match[0]}`);
-        client.set(res.match[0], "OK", 30);
+        client.set(res.match[0], "OK","EX", 30);
       }
     });
 
