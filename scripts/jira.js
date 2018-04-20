@@ -15,15 +15,16 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-    Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
+    const requests = Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
       .then(values => _.zip(res.match, values))
       .then(values => values.map(pair => {
         if (!pair[1]) {
           client.set(pair[0], "OK", "EX", MUTE_PERIOD_IN_SECS);
           return rp(jiraRequest(pair[0]));
         }
-      }))
-      .then(v => console.log(v));
+      }));
+
+    Promise.all(requests).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
 
     // getAsync(res.match[0]).then(value => {
     //   console.log(`Found ${res.match[0]}: ${value}`);
