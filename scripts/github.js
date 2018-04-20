@@ -10,7 +10,7 @@ module.exports = (robot) => {
     res.send("Hello to you!")
   });
 
-  const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/.*/g;
+  const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
     res.send("HELLO");
    /* const match = regex.exec(res.match[0]);
