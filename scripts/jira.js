@@ -15,9 +15,14 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-    Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
+    console.log(Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
       .then(values => _.zip(res.match, values))
-      .then(values => console.log(values));
+      .then(values => values.map(pair => {
+        if (!pair[1]) {
+          client.set(pair[0], "OK", "EX", MUTE_PERIOD_IN_SECS);
+          return rp(jiraRequest(pair[0]));
+        }
+      })));
 
     // getAsync(res.match[0]).then(value => {
     //   console.log(`Found ${res.match[0]}: ${value}`);
