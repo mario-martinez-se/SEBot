@@ -14,7 +14,7 @@ module.exports = (robot) => {
         .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
         .filter(data => data.owner && data.repo && data.number)
         .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
-    ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(values[0])), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(values[0]))]}));
+    ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(values[0]))]}));
 
     // const match = regexGeneral.exec(res.match[0]);
     // const owner = match[1];
@@ -49,7 +49,7 @@ const getColour = (state) => {
   }
 };
 
-const message = (responses) => `Hey! I found these Pull Request (${responses.map(response => response.number).join(',')})`;
+const message = (responses) => `Hey! I found these Pull Request (${responses.map(response => JSON.parse(response).number).join(',')})`;
 
 const attachment = (data) => ({
   "fallback": `${data.title}`,
