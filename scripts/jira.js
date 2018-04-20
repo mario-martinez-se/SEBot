@@ -8,15 +8,12 @@ const JIRA_USERNAME = process.env.JIRA_USERNAME;
 module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
-
     Promise.all(
       res.match.map(issueId => rp(jiraRequest(issueId)))
     )
     .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-
   });
 };
-
 
 const jiraRequest = (issueId) => ({
   method: "GET",
@@ -27,7 +24,6 @@ const jiraRequest = (issueId) => ({
     "Content-Type": "application/json"
   }
 });
-
 
 const message = (responses) => `Hey! Are you talking about ${responses.length < 2 ? 'this' : 'these'} JIRA ticket${responses.length < 2 ? '' : 's'}: ${responses.map(response => JSON.parse(response).key).join(', ')}?`;
 
@@ -62,5 +58,21 @@ const attachment = (data) => ({
   "ts": Date.parse(data.fields.created)/1000
 });
 
-
 const convertApiUrl = (url, key) => url.replace(/\/rest\/api\/2\/issue\/(?:\d)+(?:\/)?/, `/browse/${key}`);
+
+const getColour = (stringColor) => {
+  switch(stringColor) {
+    case 'blue-gray':
+      return "#687681";
+      break;
+    case 'yellow':
+      return "#FFFF00";
+      break;
+    case 'green':
+      return "#008000";
+      break;
+    default:
+      return "#D3D3D3";
+  }
+
+}
