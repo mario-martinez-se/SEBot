@@ -41,7 +41,7 @@ const attachment = (data) => ({
   // "author_link": `${data.user.html_url}`,
   "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
   // "title_link": `${data.html_url}`,
-  "text": `${data.fields.description.substring(0, 80)}`,
+  "text": `${data.fields.description.substring(0, 80)}&#8230;`,
   // "fields": [
   //   {
   //     "title": "Status",
