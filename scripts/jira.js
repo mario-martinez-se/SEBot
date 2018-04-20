@@ -45,7 +45,7 @@ const attachment = (data) => ({
   "fields": [
     {
       "title": "Status",
-      "value": `${data.status.name}`,
+      "value": `${data.fields.status.name}`,
       "short": true
     },
   //   {
