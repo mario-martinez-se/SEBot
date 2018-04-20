@@ -20,7 +20,7 @@ module.exports = (robot) => {
 
 const jiraRequest = (issueId) => ({
   method: "GET",
-  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description,created,status`,
+  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description,created,status,issuetype`,
   headers: {
     "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN, 'base64')}`,
     "User-Agent": "SEBOT",
@@ -39,13 +39,19 @@ const attachment = (data) => ({
   "color": "#2cbe4e",
   "author_name": `${data.fields.assignee ? data.fields.assignee.displayName : 'Unassigned'}`,
   // "author_link": `${data.user.html_url}`,
-  "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
+  // Avatar url is protected :(
+  // "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
   // "title_link": `${data.html_url}`,
-  "text": `${data.fields.description.substring(0, 80)}...`,
+  "text": `${data.fields.description}`,
   "fields": [
     {
       "title": "Status",
       "value": `${data.fields.status.name}`,
+      "short": true
+    },
+    {
+      "title": "Type",
+      "value": `${data.fields.issuetype.name}`,
       "short": true
     },
   //   {
