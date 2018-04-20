@@ -37,11 +37,11 @@ const attachment = (data) => ({
   "fallback": `${data.fields.summary}`,
   "title": `${data.fields.summary}`,
   "color": "#2cbe4e",
-  // "author_name": `${data.fields.assignee.displayName}`,
+  "author_name": `${data.fields.assignee ? data.fields.assignee.displayName : 'Unassigned'}`,
   // "author_link": `${data.user.html_url}`,
   // "author_icon": `${data.fields.assignee.avatarUrls["16x16"]}`,
   // "title_link": `${data.html_url}`,
-  "text": `${data.fields.description}`,
+  "text": `${data.fields.description.substring(0, 80)}`,
   // "fields": [
   //   {
   //     "title": "Status",
