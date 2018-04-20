@@ -69,7 +69,7 @@ const getColour = (stringColor) => {
       return "#F7DC6F";
       break;
     case 'green':
-      return "##2ECC71";
+      return "#2ECC71";
       break;
     default:
       return "#D3D3D3";
