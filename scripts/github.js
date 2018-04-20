@@ -10,14 +10,14 @@ module.exports = (robot) => {
 
 
     console.log(res.match
-      .map(match => ({owner: match[1], repo: match[2], number: match[3]}))
+      .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
       .filter(data => data.owner && data.repo && data.number));
-
-    Promise.all(res.match
-      .map(match => ({owner: match[1], repo: match[2], number: match[3]}))
-      .filter(data => data.owner && data.repo && data.number)
-      .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))).then(data => {
-    });
+	//
+    // Promise.all(res.match
+    //   .map(match => ({owner: match[1], repo: match[2], number: match[3]}))
+    //   .filter(data => data.owner && data.repo && data.number)
+    //   .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))).then(data => {
+    // });
 
     const match = regex.exec(res.match[0]);
     const owner = match[1];
