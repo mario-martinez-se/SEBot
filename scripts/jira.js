@@ -22,7 +22,7 @@ const jiraRequest = (issueId) => ({
   method: "GET",
   uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary`,
   headers: {
-    "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN), 'base64'}`,
+    "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN, 'base64')}`,
     "User-Agent": "SEBOT",
     "Content-Type": "application/json"
   }
