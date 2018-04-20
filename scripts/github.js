@@ -18,29 +18,28 @@ module.exports = (robot) => {
     const number = match[3];
 
     const attachment = (data) => ({
-      "fallback": "adding booking with flights to await payment job",
+      "fallback": `${data.title}`,
       "color": "#36a64f",
       "author_name": `${data.user.login}`,
-      "author_link": "https://github.com/nelson687se",
-      "author_icon": "https://avatars2.githubusercontent.com/u/15727269?v=4",
-      "title": "adding booking with flights to await payment job",
+      "author_link": `${data.user.html_url}`,
+      "author_icon": `${data.user.avatar_url}`,
+      "title": `${data.title}`,
       "title_link": `${data.html_url}`,
-      "text": "Optional text that appears within the attachment",
+      "text": `${data.body}`,
       "fields": [
         {
           "title": "Status",
-          "value": "Open",
+          "value": `${data.state}`,
           "short": true
         },
         {
           "title": "Lines changed",
-          "value": "+1234 -3123",
+          "value": `+${data.additions} -${data.deletions}`,
           "short": true
         }
       ],
-      "image_url": "http://my-website.com/path/to/image.jpg",
       "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
-      "ts": 123456789
+      "ts": new Date().getTime()
     });
 
     // robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [test]});
@@ -53,7 +52,7 @@ module.exports = (robot) => {
           "Authorization": `token ${GITHUB_TOKEN}`,
           "User-Agent": "SEBOT"
         }
-      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
+      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, "Hey! I found this Pull Request", {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
     }
   });
 
