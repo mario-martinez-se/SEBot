@@ -13,12 +13,13 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
     getAsync(res.match[0]).then(value => {
-      console.log(value);
+      console.log(`Found ${res.match[0]}: ${value}`);
       if (!value) {
-        client.set(res.match[0], "OK");
+        console.log(`Saving ${res.match[0]}`);
+        client.set(res.match[0], "OK", 30);
       }
     });
-    
+
     Promise.all(
       res.match.map(issueId => rp(jiraRequest(issueId)))
     )
