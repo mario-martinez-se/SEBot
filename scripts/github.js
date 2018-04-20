@@ -16,34 +16,6 @@ module.exports = (robot) => {
     const owner = match[1];
     const  repo = match[2];
     const number = match[3];
-
-    const attachment = (data) => ({
-      "fallback": `${data.title}`,
-      "color": "#36a64f",
-      "author_name": `${data.user.login}`,
-      "author_link": `${data.user.html_url}`,
-      "author_icon": `${data.user.avatar_url}`,
-      "title": `${data.title}`,
-      "title_link": `${data.html_url}`,
-      "text": `${data.body}`,
-      "fields": [
-        {
-          "title": "Status",
-          "value": `${data.state}`,
-          "short": true
-        },
-        {
-          "title": "Lines changed",
-          "value": `+${data.additions} -${data.deletions}`,
-          "short": true
-        }
-      ],
-      "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
-      "ts": new Date().getTime()
-    });
-
-    // robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [test]});
-
     if (owner && repo && number) {
       rp({
         method: "GET",
@@ -57,3 +29,28 @@ module.exports = (robot) => {
   });
 
 };
+
+const attachment = (data) => ({
+  "fallback": `${data.title}`,
+  "color": "#36a64f",
+  "author_name": `${data.user.login}`,
+  "author_link": `${data.user.html_url}`,
+  "author_icon": `${data.user.avatar_url}`,
+  "title": `${data.title}`,
+  "title_link": `${data.html_url}`,
+  "text": `${data.body}`,
+  "fields": [
+    {
+      "title": "Status",
+      "value": `${data.state}`,
+      "short": true
+    },
+    {
+      "title": "Lines changed",
+      "value": `+${data.additions} -${data.deletions}`,
+      "short": true
+    }
+  ],
+  "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
+  "ts": new Date().getTime()
+});
