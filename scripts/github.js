@@ -41,7 +41,7 @@ const getColour = (state) => {
   }
 };
 
-const message = (responses) => `Hey! I found ${responses.length < 2 ? 'this' : 'these'} Pull Request (${responses.map(response => JSON.parse(response).number).join(', ')})`;
+const message = (responses) => `Hey! Are you talking about ${responses.length < 2 ? 'this' : 'these'} Pull Request${responses.length < 2 ? '' : 's'}: ${responses.map(response => JSON.parse(response).number).join(', ')}?`;
 
 const attachments = (responses) => responses.map(response => attachment(JSON.parse(response)));
 
