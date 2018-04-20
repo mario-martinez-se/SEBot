@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const encode = require('nodejs-base64-encode');
 require('dotenv').config();
 
 const JIRA_TOKEN = process.env.JIRA_TOKEN;
@@ -21,7 +22,7 @@ const jiraRequest = (issueId) => ({
   method: "GET",
   uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary`,
   headers: {
-    "Authorization": `Basic ${btoa(JIRA_USERNAME+":"+JIRA_TOKEN)}`,
+    "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN), 'base64'}`,
     "User-Agent": "SEBOT",
     "Content-Type": "application/json"
   }
