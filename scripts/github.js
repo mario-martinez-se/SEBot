@@ -43,17 +43,6 @@ module.exports = (robot) => {
       "ts": 123456789
     };
 
-    msgData = {
-      channel: msg.message.room,
-      text: "Latest changes",
-      attachments: [
-        {
-          fallback: "Comparing #{latestRelease.name}...#{latestRelease.target_commitish} - #{compare.html_url}",
-          title: "Comparing #{latestRelease.name}...#{latestRelease.target_commitish}",
-          text: "commits_summary"
-        }
-      ]
-    };
     robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [
         {
           title: 'a title',
