@@ -3,22 +3,29 @@ const encode = require('nodejs-base64-encode');
 const {promisify} = require('util');
 const client = require('redis').createClient(process.env.REDISCLOUD_URL);
 const getAsync = promisify(client.get).bind(client);
+const _ = require("underscore");
 
 require('dotenv').config();
 
 const JIRA_TOKEN = process.env.JIRA_TOKEN;
 const JIRA_USERNAME = process.env.JIRA_USERNAME;
+const MUTE_PERIOD_IN_SECS = 30;
 
 module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
-    getAsync(res.match[0]).then(value => {
-      console.log(`Found ${res.match[0]}: ${value}`);
-      if (!value) {
-        console.log(`Saving ${res.match[0]}`);
-        client.set(res.match[0], "OK","EX", 30);
-      }
-    });
+
+    Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
+      .then(values => _.zip(res.match, values))
+      .then(values => console.log(values));
+
+    // getAsync(res.match[0]).then(value => {
+    //   console.log(`Found ${res.match[0]}: ${value}`);
+    //   if (!value) {
+    //     console.log(`Saving ${res.match[0]}`);
+    //     client.set(res.match[0], "OK","EX", MUTE_PERIOD_IN_SECS);
+    //   }
+    // });
 
     Promise.all(
       res.match.map(issueId => rp(jiraRequest(issueId)))
