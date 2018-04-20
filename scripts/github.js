@@ -9,10 +9,7 @@ module.exports = (robot) => {
 
 
 
-    console.log(res.match
-      .map(data => regex.exec(data))
-      .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
-      .filter(data => data.owner && data.repo && data.number));
+    console.log(res.match);
 	//
     // Promise.all(res.match
     //   .map(match => ({owner: match[1], repo: match[2], number: match[3]}))
