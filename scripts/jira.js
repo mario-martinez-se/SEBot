@@ -39,7 +39,7 @@ const attachment = (data) => ({
   "color": "#2cbe4e",
   "author_name": `${data.fields.assignee ? data.fields.assignee.displayName : 'Unassigned'}`,
   // "author_link": `${data.user.html_url}`,
-  // "author_icon": `${data.fields.assignee.avatarUrls["16x16"]}`,
+  "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
   // "title_link": `${data.html_url}`,
   "text": `${data.fields.description.substring(0, 80)}`,
   // "fields": [
