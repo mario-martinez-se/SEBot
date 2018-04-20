@@ -7,7 +7,7 @@ module.exports = (robot) => {
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regex, [], (res)=> {
 
-    console.log(res.match.map(url => regex.exec(url)));
+    console.log(res.match);
 
 
     //
