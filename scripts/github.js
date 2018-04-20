@@ -10,6 +10,7 @@ module.exports = (robot) => {
 
 
     console.log(res.match
+      .map(data => regex.exec(data))
       .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
       .filter(data => data.owner && data.repo && data.number));
 	//
