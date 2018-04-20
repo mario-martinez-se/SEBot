@@ -54,8 +54,13 @@ module.exports = (robot) => {
         }
       ]
     };
-    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [test]});
-    // robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false})
+    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [
+        {
+          title: 'a title',
+          fallback: 'a fallback',
+          title_link: 'http://example.com'
+        }
+      ]});
 
     // if (owner && repo && number) {
     //   rp({
