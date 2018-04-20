@@ -12,8 +12,7 @@ module.exports = (robot) => {
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
-    robot.emit('slack.attachment', {message: 'Hello!!!', channel: res.room, content: {text: "Attachement text", fallback: "Attachment fallback", fields: [{title: "Field title", value: "Field Value"}]}})
-    // robot.adapter.client.web.chat.postMessage({ channel: res.message.room, text: 'Hello there', attachments: []});
+    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false});
    /* const match = regex.exec(res.match[0]);
     const owner = match[1];
     const  repo = match[2];
