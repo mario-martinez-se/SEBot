@@ -4,11 +4,6 @@ require('dotenv').config();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 module.exports = (robot) => {
 
-
-  robot.hear(/hello/, [], (res)=>{
-    res.send("Hello to you!")
-  });
-
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
     const match = regex.exec(res.match[0]);
