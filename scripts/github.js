@@ -17,14 +17,14 @@ module.exports = (robot) => {
     const  repo = match[2];
     const number = match[3];
 
-    const test = {
+    const attachment = (data) => ({
       "fallback": "adding booking with flights to await payment job",
       "color": "#36a64f",
-      "author_name": "Nelson Gallardo",
+      "author_name": `${data.user.login}`,
       "author_link": "https://github.com/nelson687se",
       "author_icon": "https://avatars2.githubusercontent.com/u/15727269?v=4",
       "title": "adding booking with flights to await payment job",
-      "title_link": "https://github.com/secretescapes/secret-escapes/pull/2004",
+      "title_link": `${data.html_url}`,
       "text": "Optional text that appears within the attachment",
       "fields": [
         {
@@ -41,20 +41,20 @@ module.exports = (robot) => {
       "image_url": "http://my-website.com/path/to/image.jpg",
       "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
       "ts": 123456789
-    };
+    });
 
-    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [test]});
+    // robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [test]});
 
-    // if (owner && repo && number) {
-    //   rp({
-    //     method: "GET",
-    //     uri: `https://api.github.com/repos/${owner}/${repo}/pulls/${number}`,
-    //     headers: {
-    //       "Authorization": `token ${GITHUB_TOKEN}`,
-    //       "User-Agent": "SEBOT"
-    //     }
-    //   }).then(data=> res.emit('slack-attachment', test))
-    // }
+    if (owner && repo && number) {
+      rp({
+        method: "GET",
+        uri: `https://api.github.com/repos/${owner}/${repo}/pulls/${number}`,
+        headers: {
+          "Authorization": `token ${GITHUB_TOKEN}`,
+          "User-Agent": "SEBOT"
+        }
+      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [attachment(data)]}))
+    }
   });
 
 };
