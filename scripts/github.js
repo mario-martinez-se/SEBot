@@ -53,7 +53,7 @@ module.exports = (robot) => {
           "Authorization": `token ${GITHUB_TOKEN}`,
           "User-Agent": "SEBOT"
         }
-      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [attachment(data)]}))
+      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
     }
   });
 
