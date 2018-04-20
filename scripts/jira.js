@@ -11,7 +11,7 @@ module.exports = (robot) => {
     Promise.all(
       res.match.map(issueId => rp(jiraRequest(issueId)))
     )
-    .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+      .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
   });
 };
 
@@ -66,13 +66,12 @@ const getColour = (stringColor) => {
       return "#687681";
       break;
     case 'yellow':
-      return "#FFFF00";
+      return "#F7DC6F";
       break;
     case 'green':
-      return "#008000";
+      return "#82E0AA";
       break;
     default:
       return "#D3D3D3";
   }
-
-}
+};
