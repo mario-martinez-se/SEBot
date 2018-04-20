@@ -66,5 +66,5 @@ const attachment = (data) => ({
     }
   ],
   "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
-  "ts": new Date().getTime()
+  "ts": Date.parse(data.created_at)/1000
 });
