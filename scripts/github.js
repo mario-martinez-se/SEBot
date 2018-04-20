@@ -4,10 +4,14 @@ require('dotenv').config();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 module.exports = (robot) => {
 
-  const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
-  robot.hear(regex, [], (res)=> {
+  const regexGeneral = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
+  const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
+  robot.hear(regexGeneral, [], (res)=> {
 
-    console.log(res.match);
+    console.log(
+      res.match
+        .map(url => regex.exec(url))
+    );
 
 
     //
@@ -19,7 +23,7 @@ module.exports = (robot) => {
     //     .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
     // ).then(values => console.log(values.length));
 
-    const match = regex.exec(res.match[0]);
+    const match = regexGeneral.exec(res.match[0]);
     const owner = match[1];
     const repo = match[2];
     const number = match[3];
