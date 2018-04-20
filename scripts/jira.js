@@ -1,6 +1,8 @@
 const rp = require('request-promise');
 const encode = require('nodejs-base64-encode');
-var client = require('redis').createClient(process.env.REDISCLOUD_URL);
+const {promisify} = require('util');
+const client = require('redis').createClient(process.env.REDISCLOUD_URL);
+const getAsync = promisify(client.get).bind(client);
 
 require('dotenv').config();
 
@@ -10,7 +12,13 @@ const JIRA_USERNAME = process.env.JIRA_USERNAME;
 module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
-    client.set("string key", "string val", redis.print);
+    getAsync(res.match[0]).then(value => {
+      console.log(value);
+      if (!value) {
+        client.set(res.match[0], "OK");
+      }
+    });
+    
     Promise.all(
       res.match.map(issueId => rp(jiraRequest(issueId)))
     )
