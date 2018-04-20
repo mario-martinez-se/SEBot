@@ -6,6 +6,8 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/;
   robot.hear(regexGeneral, [], (res)=> {
 
-    res.send(`${res.match.map(issueId => regex.exec(issueId))}`);
+    // res.match.map(issueId => regex.exec(issueId)).map()
+    
+    res.send(`${res.match}`);
   });
 };
