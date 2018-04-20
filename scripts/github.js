@@ -12,7 +12,13 @@ module.exports = (robot) => {
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
-    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false});
+    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [
+        {
+          title: 'a title',
+          fallback: 'a fallback',
+          title_link: 'http://example.com'
+        }
+      ]});
    /* const match = regex.exec(res.match[0]);
     const owner = match[1];
     const  repo = match[2];
