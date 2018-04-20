@@ -15,14 +15,6 @@ module.exports = (robot) => {
         .filter(data => data.owner && data.repo && data.number)
         .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
     ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-
-    // const match = regexGeneral.exec(res.match[0]);
-    // const owner = match[1];
-    // const repo = match[2];
-    // const number = match[3];
-    // if (owner && repo && number) {
-    //   rp(githubRequest({owner: owner, repo: repo, number:number})).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(data)), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
-    // }
   });
 
 };
@@ -49,7 +41,7 @@ const getColour = (state) => {
   }
 };
 
-const message = (responses) => `Hey! I found these Pull Request (${responses.map(response => JSON.parse(response).number).join(', ')})`;
+const message = (responses) => `Hey! I found ${responses.length < 2 ? 'this' : 'these'} Pull Request (${responses.map(response => JSON.parse(response).number).join(', ')})`;
 
 const attachments = (responses) => responses.map(response => attachment(JSON.parse(response)));
 
