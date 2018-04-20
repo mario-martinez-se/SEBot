@@ -6,7 +6,6 @@ module.exports = (robot) => {
 
 
   robot.hear(/hello/, [], (res)=>{
-    // robot.adapter.client.web.chat.postMessage({ channel: res.message.room, text: 'Hello there', attachments: []});
     res.send("Hello to you!")
   });
 
@@ -14,22 +13,23 @@ module.exports = (robot) => {
   robot.hear(regex, [], (res)=> {
     const match = regex.exec(res.match[0]);
     const owner = match[1];
-    const  repo = match[2];
+    const repo = match[2];
     const number = match[3];
     if (owner && repo && number) {
-      rp({
-        method: "GET",
-        uri: `https://api.github.com/repos/${owner}/${repo}/pulls/${number}`,
-        headers: {
-          "Authorization": `token ${GITHUB_TOKEN}`,
-          "User-Agent": "SEBOT"
-        }
-      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(data)), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
+      rp(githubRequest({owner: owner, repo: repo, number:number})).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(data)), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
     }
   });
 
 };
 
+const githubRequest = (data) => ({
+  method: "GET",
+  uri: `https://api.github.com/repos/${data.owner}/${data.repo}/pulls/${data.number}`,
+  headers: {
+    "Authorization": `token ${GITHUB_TOKEN}`,
+    "User-Agent": "SEBOT"
+  }
+});
 
 const getColour = (state) => {
   switch (state) {
