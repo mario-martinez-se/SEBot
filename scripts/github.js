@@ -6,7 +6,16 @@ module.exports = (robot) => {
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
-    console.log(`MMC: ${res.match}`);
+
+
+
+    Promise.all(res.match
+      .map(match => ({owner: match[1], repo: match[2], number: match[3]}))
+      .filter(data => data.owner && data.repo && data.number)
+      .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))).then(data => {
+        console.log(`${data}`)
+    });
+
     const match = regex.exec(res.match[0]);
     const owner = match[1];
     const repo = match[2];
