@@ -54,7 +54,7 @@ const attachment = (data) => ({
       "value": `${data.fields.issuetype.name}`,
       "short": true
     },
-    data.fields.aggregateprogress ? {
+    data.fields.aggregateprogress.total > 0 ? {
       "title": "Progress",
       "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total/60/60} hours`,
       "short": true} : {}
