@@ -7,21 +7,14 @@ module.exports = (robot) => {
   const regexGeneral = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
-
-    console.log(
+    
+    Promise.all(
       res.match
         .map(url => regex.exec(url))
-    );
-
-
-    //
-    // Promise.all(
-    //   res.match
-    //     .map(url => regex.exec(url))
-    //     .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
-    //     .filter(data => data.owner && data.repo && data.number)
-    //     .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
-    // ).then(values => console.log(values.length));
+        .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
+        .filter(data => data.owner && data.repo && data.number)
+        .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
+    ).then(values => console.log(values.length));
 
     const match = regexGeneral.exec(res.match[0]);
     const owner = match[1];
