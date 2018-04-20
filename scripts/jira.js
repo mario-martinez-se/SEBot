@@ -22,8 +22,9 @@ module.exports = (robot) => {
           client.set(pair[0], "OK", "EX", MUTE_PERIOD_IN_SECS);
           return rp(jiraRequest(pair[0]));
         }
-      }));
-
+      }))
+      .then(requests => requests.filter(request => request !== undefined));
+    console.log(`Requests: ${requests.length}`);
     Promise.all(requests).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
 
     // getAsync(res.match[0]).then(value => {
@@ -38,7 +39,7 @@ module.exports = (robot) => {
     //     res.match.map(issueId => rp(jiraRequest(issueId)))
     //   )
     //     .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-    
+
   });
 };
 
