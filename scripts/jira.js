@@ -33,7 +33,7 @@ const message = (responses) => `Hey! Are you talking about ${responses.length < 
 
 const attachments = (responses) => responses.map(response => attachment(JSON.parse(response)));
 
-const attachment = (response) => ({
+const attachment = (data) => ({
   "fallback": `${data.fields.summary}`,
   "title": `${data.fields.summary}`,
   "color": "#2cbe4e",
