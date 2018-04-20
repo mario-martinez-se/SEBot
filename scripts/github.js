@@ -6,6 +6,7 @@ module.exports = (robot) => {
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
+    console.log(`MMC: ${res.match}`);
     const match = regex.exec(res.match[0]);
     const owner = match[1];
     const repo = match[2];
