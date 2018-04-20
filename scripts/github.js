@@ -43,13 +43,7 @@ module.exports = (robot) => {
       "ts": 123456789
     };
 
-    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [
-        {
-          title: 'a title',
-          fallback: 'a fallback',
-          title_link: 'http://example.com'
-        }
-      ]});
+    robot.adapter.client.web.chat.postMessage(res.message.room, "This is a message!", {as_user: true, unfurl_links: false, attachments: [test]});
 
     // if (owner && repo && number) {
     //   rp({
