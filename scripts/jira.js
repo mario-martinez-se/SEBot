@@ -56,15 +56,9 @@ const attachment = (data) => ({
     },
     {
       "title": "Progress",
-      // "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total/60/60}`,
-      "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total/60/8/60 + ":" + data.fields.aggregateprogress.total/60/60%24 + ':' + data.fields.aggregateprogress.total/60%60}`,
+      "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total/60/60}`,
       "short": true
-    },
-  //   {
-  //     "title": "Lines changed",
-  //     "value": `+${data.additions} -${data.deletions}`,
-  //     "short": true
-  //   }
+    }
   ],
   "thumb_url": "https://luna1.co/5ad265.png",
   "ts": Date.parse(data.fields.created)/1000
