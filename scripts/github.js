@@ -49,7 +49,7 @@ const getColour = (state) => {
   }
 };
 
-const message = (data) => `Hey! I found this Pull Request (${data.number})`;
+const message = (responses) => `Hey! I found these Pull Request (${responses.map(response => response.number).join(',')})`;
 
 const attachment = (data) => ({
   "fallback": `${data.title}`,
