@@ -38,10 +38,9 @@ const attachment = (data) => ({
   "title": `${data.fields.summary}`,
   "color": "#2cbe4e",
   "author_name": `${data.fields.assignee ? data.fields.assignee.displayName : 'Unassigned'}`,
-  // "author_link": `${data.user.html_url}`,
   // Avatar url is protected :(
   // "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
-  // "title_link": `${data.html_url}`,
+  "title_link": `${convertApiUrl(data.self, data.key)}`,
   "text": `${data.fields.description}`,
   "fields": [
     {
@@ -62,3 +61,6 @@ const attachment = (data) => ({
   "thumb_url": "https://luna1.co/5ad265.png",
   "ts": Date.parse(data.fields.created)/1000
 });
+
+
+const convertApiUrl = (url, key) => url.replace(/\/rest\/api\/2\/issue\/(?:\d)+(?:\/)/g, `/browse/${key}`);
