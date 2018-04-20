@@ -54,11 +54,10 @@ const attachment = (data) => ({
       "value": `${data.fields.issuetype.name}`,
       "short": true
     },
-    {
+    data.fields.aggregateprogress ? {
       "title": "Progress",
-      "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total/60/60}`,
-      "short": true
-    }
+      "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total/60/60} hours`,
+      "short": true} : {}
   ],
   "thumb_url": "https://luna1.co/5ad265.png",
   "ts": Date.parse(data.fields.created)/1000
