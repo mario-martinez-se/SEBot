@@ -7,22 +7,22 @@ module.exports = (robot) => {
   const regexGeneral = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
-    
+
     Promise.all(
       res.match
         .map(url => regex.exec(url))
         .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
         .filter(data => data.owner && data.repo && data.number)
         .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
-    ).then(values => console.log(values.length));
+    ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(values[0])), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(values[0]))]}));
 
-    const match = regexGeneral.exec(res.match[0]);
-    const owner = match[1];
-    const repo = match[2];
-    const number = match[3];
-    if (owner && repo && number) {
-      rp(githubRequest({owner: owner, repo: repo, number:number})).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(data)), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
-    }
+    // const match = regexGeneral.exec(res.match[0]);
+    // const owner = match[1];
+    // const repo = match[2];
+    // const number = match[3];
+    // if (owner && repo && number) {
+    //   rp(githubRequest({owner: owner, repo: repo, number:number})).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, message(JSON.parse(data)), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
+    // }
   });
 
 };
