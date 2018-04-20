@@ -12,7 +12,31 @@ module.exports = (robot) => {
 
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   robot.hear(regex, [], (res)=> {
-  robot.adapter.client.web.chat.postMessage({ channel: res.message.room, text: 'Hello there', attachments: []});
+    robot.adapter.client.web.chat.postMessage({ channel: res.message.room, text: 'Hello there', attachments: [{
+        "fallback": "adding booking with flights to await payment job",
+        "color": "#36a64f",
+        "author_name": "Nelson Gallardo",
+        "author_link": "https://github.com/nelson687se",
+        "author_icon": "https://avatars2.githubusercontent.com/u/15727269?v=4",
+        "title": "adding booking with flights to await payment job",
+        "title_link": "https://github.com/secretescapes/secret-escapes/pull/2004",
+        "text": "Optional text that appears within the attachment",
+        "fields": [
+          {
+            "title": "Status",
+            "value": "Open",
+            "short": true
+          },
+          {
+            "title": "Lines changed",
+            "value": "+1234 -3123",
+            "short": true
+          }
+        ],
+        "image_url": "http://my-website.com/path/to/image.jpg",
+        "thumb_url": "https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png",
+        "ts": 123456789
+      }]});
    /* const match = regex.exec(res.match[0]);
     const owner = match[1];
     const  repo = match[2];
