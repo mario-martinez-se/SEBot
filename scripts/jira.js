@@ -20,7 +20,7 @@ module.exports = (robot) => {
 
 const jiraRequest = (issueId) => ({
   method: "GET",
-  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee`,
+  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description`,
   headers: {
     "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN, 'base64')}`,
     "User-Agent": "SEBOT",
@@ -37,7 +37,7 @@ const attachment = (data) => ({
   "fallback": `${data.fields.summary}`,
   "title": `${data.fields.summary}`,
   "color": "#2cbe4e",
-  "author_name": `${data.fields.assignee.displayName}`,
+  // "author_name": `${data.fields.assignee.displayName}`,
   // "author_link": `${data.user.html_url}`,
   "author_icon": `${data.fields.assignee.avatarUrls["16x16"]}`,
   // "title_link": `${data.html_url}`,
