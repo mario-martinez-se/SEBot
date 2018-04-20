@@ -63,4 +63,4 @@ const attachment = (data) => ({
 });
 
 
-const convertApiUrl = (url, key) => url.replace(/\/rest\/api\/2\/issue\/(?:\d)+(?:\/)/g, `/browse/${key}`);
+const convertApiUrl = (url, key) => url.replace(/\/rest\/api\/2\/issue\/(?:\d)+(?:\/)?/, `/browse/${key}`);
