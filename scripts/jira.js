@@ -32,11 +32,12 @@ module.exports = (robot) => {
     //   }
     // });
 
-    Promise.all(
-      res.match.map(issueId => rp(jiraRequest(issueId)))
-    )
-      .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-  });
+  //   Promise.all(
+  //     res.match.map(issueId => rp(jiraRequest(issueId)))
+  //   )
+  //     .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+  // });
+    res.send("dsf")
 };
 
 const jiraRequest = (issueId) => ({
