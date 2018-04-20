@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const encode = require('nodejs-base64-encode');
+var client = require('redis').createClient(process.env.REDISCLOUD_URL);
 
 require('dotenv').config();
 
