@@ -30,9 +30,23 @@ module.exports = (robot) => {
 
 };
 
+
+const getColour = (state) => {
+  switch (state) {
+    case 'open':
+      return '#2cbe4e';
+      break;
+    case 'closed':
+      return "#6f42c1";
+      break;
+    default:
+      return "#a3a3a3"
+  }
+};
+
 const attachment = (data) => ({
   "fallback": `${data.title}`,
-  "color": "#36a64f",
+  "color": getColour(data.state),
   "author_name": `${data.user.login}`,
   "author_link": `${data.user.html_url}`,
   "author_icon": `${data.user.avatar_url}`,
