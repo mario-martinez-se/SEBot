@@ -1,5 +1,8 @@
 const rp = require('request-promise');
 const encode = require('nodejs-base64-encode');
+var redis = require("redis");
+var client = redis.createClient();
+
 require('dotenv').config();
 
 const JIRA_TOKEN = process.env.JIRA_TOKEN;
