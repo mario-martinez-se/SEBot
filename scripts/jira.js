@@ -15,10 +15,10 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-    Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
-      .then(values => _.zip(res.match, values))
-      .then(values => values.map(pair => rp(jiraRequest(pair[0]))))
-      .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+    // Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
+    //   .then(values => _.zip(res.match, values))
+    //   .then(values => values.map(pair => rp(jiraRequest(pair[0]))))
+    //   .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
 
 
 
@@ -30,10 +30,10 @@ module.exports = (robot) => {
     //   }
     // });
 
-    //   Promise.all(
-    //     res.match.map(issueId => rp(jiraRequest(issueId)))
-    //   )
-    //     .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+      Promise.all(
+        res.match.map(issueId => rp(jiraRequest(issueId)))
+      )
+        .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
 
   });
 };
