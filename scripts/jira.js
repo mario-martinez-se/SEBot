@@ -10,6 +10,7 @@ const JIRA_USERNAME = process.env.JIRA_USERNAME;
 module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
+    client.set("string key", "string val", redis.print);
     Promise.all(
       res.match.map(issueId => rp(jiraRequest(issueId)))
     )
