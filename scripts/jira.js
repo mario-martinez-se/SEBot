@@ -1,13 +1,28 @@
 const rp = require('request-promise');
 require('dotenv').config();
 
-module.exports = (robot) => {
-  const regexGeneral = /DEV-\d+/g;
-  const regex = /DEV-\d+/;
-  robot.hear(regexGeneral, [], (res)=> {
+const JIRA_TOKEN = process.env.JIRA_TOKEN;
+const JIRA_USERNAME = process.env.JIRA_USERNAME;
 
-    // res.match.map(issueId => regex.exec(issueId)).map()
-    
-    res.send(`${res.match}`);
+module.exports = (robot) => {
+  const regex = /DEV-\d+/g;
+  robot.hear(regex, [], (res)=> {
+
+    Promise.all(
+      res.match.map(issueId => rp(jiraRequest(issueId)))
+    )
+    .then(values => res.send(`${values}`));
+
   });
 };
+
+
+const jiraRequest = (issueId) => ({
+  method: "GET",
+  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary`,
+  headers: {
+    "Authorization": `Basic ${btoa(JIRA_USERNAME+":"+JIRA_TOKEN)}`,
+    "User-Agent": "SEBOT",
+    "Content-Type": "application/json"
+  }
+});
