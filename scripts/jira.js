@@ -32,7 +32,7 @@ const attachments = (responses) => responses.map(response => attachment(JSON.par
 const attachment = (data) => ({
   "fallback": `${data.fields.summary}`,
   "title": `${data.fields.summary}`,
-  "color": "#2cbe4e",
+  "color": getColour(data.fields.status.statusCategory.colorName),
   "author_name": `${data.fields.assignee ? data.fields.assignee.displayName : 'Unassigned'}`,
   // Avatar url is protected :(
   // "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
