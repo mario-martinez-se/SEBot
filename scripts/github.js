@@ -24,7 +24,7 @@ module.exports = (robot) => {
           "Authorization": `token ${GITHUB_TOKEN}`,
           "User-Agent": "SEBOT"
         }
-      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, "Hey! I found this Pull Request", {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
+      }).then(data => robot.adapter.client.web.chat.postMessage(res.message.room, message(data), {as_user: true, unfurl_links: false, attachments: [attachment(JSON.parse(data))]}))
     }
   });
 
@@ -43,6 +43,8 @@ const getColour = (state) => {
       return "#a3a3a3"
   }
 };
+
+const message = (data) => `Hey! I found this Pull Request (${data.number})`;
 
 const attachment = (data) => ({
   "fallback": `${data.title}`,
