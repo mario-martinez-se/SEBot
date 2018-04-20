@@ -20,7 +20,7 @@ module.exports = (robot) => {
 
 const jiraRequest = (issueId) => ({
   method: "GET",
-  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description,created,status,issuetype`,
+  uri: `https://secretescapes.atlassian.net/rest/api/2/issue/${issueId}?fields=summary,assignee,description,created,status,issuetype,aggregateprogress`,
   headers: {
     "Authorization": `Basic ${encode.encode(JIRA_USERNAME+":"+JIRA_TOKEN, 'base64')}`,
     "User-Agent": "SEBOT",
@@ -52,6 +52,11 @@ const attachment = (data) => ({
     {
       "title": "Type",
       "value": `${data.fields.issuetype.name}`,
+      "short": true
+    },
+    {
+      "title": "Progress",
+      "value": `Remaining ${(data.fields.aggregateprogress.total - data.fields.aggregateprogress.progress)/60/60} hours of ${data.fields.aggregateprogress.total}`,
       "short": true
     },
   //   {
