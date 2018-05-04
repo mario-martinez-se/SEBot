@@ -17,7 +17,14 @@ module.exports = (robot) => {
 
 
     mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
-      .then(values => console.log(values));
+      .then(values => _.zip(res.match, values))
+      .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
+      .then(issueIds => {
+        issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+        return issueIds;
+      })
+      .then(issueIds => console.log(issueIds))
+    ;
 
     // Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
     //   .then(values => _.zip(res.match, values))
