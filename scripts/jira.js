@@ -16,33 +16,33 @@ module.exports = (robot) => {
   robot.hear(regex, [], (res)=> {
 
 
-    Promise.all(
-      mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
-        .then(values => _.zip(res.match, values))
-        .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
-        .then(issueIds => {
-          issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
-          return issueIds;
-        })
-        .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
-    )
-      // .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}))
+    mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
+      .then(values => _.zip(res.match, values))
+      .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
+      .then(issueIds => {
+        issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+        return issueIds;
+      })
+      .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
+      .then(promises => Promise.all(promises))
       .then(values => console.log(values));
 
-    // Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
-    //   .then(values => _.zip(res.match, values))
-    //   .then(values => values.map(pair => rp(jiraRequest(pair[0]))))
-    //   .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+    // Promise.all(
+    //   mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
+    //     .then(values => _.zip(res.match, values))
+    //     .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
+    //     .then(issueIds => {
+    //       issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+    //       return issueIds;
+    //     })
+    //     .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
+    // )
+    //   // .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}))
+    //   .then(values => console.log(values));
+    //
 
 
 
-    // getAsync(res.match[0]).then(value => {
-    //   console.log(`Found ${res.match[0]}: ${value}`);
-    //   if (!value) {
-    //     console.log(`Saving ${res.match[0]}`);
-    //     client.set(res.match[0], "OK","EX", MUTE_PERIOD_IN_SECS);
-    //   }
-    // });
 
       // Promise.all(
       //   res.match.map(issueId => rp(jiraRequest(issueId)))
