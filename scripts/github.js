@@ -8,14 +8,17 @@ module.exports = (robot) => {
   const regexGeneral = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
-    Promise.all(
-      filterByExpirity(res.match, res.message.room)
-        .map(url => regex.exec(url))
-        .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
-        .filter(data => data.owner && data.repo && data.number)
-        .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
-    ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-  });
+
+    console.log(filterByExpirity(res.match, res.message.room));
+
+  //   Promise.all(
+  //     filterByExpirity(res.match, res.message.room)
+  //       .map(url => regex.exec(url))
+  //       .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
+  //       .filter(data => data.owner && data.repo && data.number)
+  //       .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
+  //   ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+  // });
 
 };
 
