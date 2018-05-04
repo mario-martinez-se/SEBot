@@ -25,6 +25,6 @@ module.exports = (robot) => {
   });
 
   robot.error((error, res) => {
-    res.send(`:nauseated_face: I am not feeling too well, @{{mario}}, please help me!\n${error}`);
+    res.send(`:nauseated_face: I am not feeling too well...\n${error}`);
   });
 };
