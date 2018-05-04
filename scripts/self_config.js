@@ -1,8 +1,7 @@
-var juration = require('juration');
-
+const juration = require('juration');
+const commons = require('../commons');
 module.exports = (robot) => {
-  const regex = /be quiet for (.*)/i;
-  robot.respond(regex, [], (res)=> {
+  robot.respond(/be quiet for (.*)/i, [], (res)=> {
     const secs = juration.parse(res.match[1]);
 
     if (!isNaN(secs)) {
@@ -11,5 +10,9 @@ module.exports = (robot) => {
     } else {
       res.send(`Sorry, I don't understand`);
     }
+  });
+
+  robot.respond(/config/i, [], (res) => {
+    res.send(`I won't repeat myself for ${robot.brain.set(`SILENT_FOR:${res.message.room}`)||commons.DEFAULT_MUTE_PERIOD} secs in this channel`)
   });
 };
