@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const encode = require('nodejs-base64-encode');
-const filterByExpirity = require('../commons').filterByExpirity;
+const commons = require('../commons');
 
 require('dotenv').config();
 
@@ -11,7 +11,7 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-    filterByExpirity(res.match, res.message.room,  robot.brain.get(`SILENT_FOR:${res.message.room}`) || 30)
+    commons.filterByExpirity(res.match, res.message.room,  robot.brain.get(`SILENT_FOR:${res.message.room}`) || commons.DEFAULT_MUTE_PERIOD)
       .then(issueIds => Promise.all(issueIds.map(issueId => rp(jiraRequest(issueId)))))
       .then(values => values.length > 0 ? robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}) : null);
   });

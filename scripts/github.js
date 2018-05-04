@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 require('dotenv').config();
-const filterByExpirity = require('../commons').filterByExpirity;
+const commons = require('../commons');
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 module.exports = (robot) => {
@@ -9,7 +9,7 @@ module.exports = (robot) => {
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
 
-    filterByExpirity(res.match, res.message.room,  robot.brain.get(`SILENT_FOR:${res.message.room}`) || 30)
+    commons.filterByExpirity(res.match, res.message.room,  robot.brain.get(`SILENT_FOR:${res.message.room}`) || commons.DEFAULT_MUTE_PERIOD)
       .then(urls => urls.map(url => regex.exec(url)))
       .then(matches => matches.map (m => ({owner: m[1], repo: m[2], number: m[3]})))
       .then(data => data.filter(elem => elem.owner && elem.repo && elem.number))
