@@ -25,7 +25,7 @@ module.exports = (robot) => {
       })
       .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
       .then(promises => Promise.all(promises))
-      .then(values => console.log(values));
+      .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
 
     // Promise.all(
     //   mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
