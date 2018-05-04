@@ -1,7 +1,7 @@
 
 module.exports = (robot) => {
   const regex = /badger/i;
-  robot.respond(regex, [], (res)=> {
+  robot.hear(regex, [], (res)=> {
     res.send(`Ok`)
   });
 };
