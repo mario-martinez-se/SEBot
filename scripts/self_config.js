@@ -1,7 +1,7 @@
 const juration = require('juration');
 const commons = require('../commons');
 module.exports = (robot) => {
-  robot.respond(/be quiet for (.*)/i, [], (res)=> {
+  robot.respond(/don't repeat for (.*)/i, [], (res)=> {
     const secs = juration.parse(res.match[1]);
 
     if (!isNaN(secs)) {
@@ -12,7 +12,11 @@ module.exports = (robot) => {
     }
   });
 
-  robot.respond(/config/i, [], (res) => {
+  robot.respond(/(.*)config(.*)/i, [], (res) => {
     res.send(`I won't repeat myself for ${robot.brain.get("SILENT_FOR:"+res.message.room)||commons.DEFAULT_MUTE_PERIOD} secs in this channel`);
+  });
+
+  robot.respond(/help/i, [], (res) => {
+    res.send(`Hey, I can get information about jira tickets and github pull requests when I see you are talking about them, but if I repeat myself too much, you can just let me know ("@sebot don't repeat for X minutes").\nAlso, if you want to know for how long I won't repeat myself in this channel, you can just ask "@sebot what's your config?"`);
   });
 };
