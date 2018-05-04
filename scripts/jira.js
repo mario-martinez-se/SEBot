@@ -15,40 +15,19 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-
+    //Get all keys from redis
     mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
+      //Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
       .then(values => _.zip(res.match, values))
+        //Get issueIds that have no key in redis [DEV-123]
       .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
       .then(issueIds => {
+        //Store new key in redis with expirity
         issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
         return issueIds;
       })
-      .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
-      .then(promises => Promise.all(promises))
-      .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-
-    // Promise.all(
-    //   mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
-    //     .then(values => _.zip(res.match, values))
-    //     .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
-    //     .then(issueIds => {
-    //       issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
-    //       return issueIds;
-    //     })
-    //     .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
-    // )
-    //   // .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}))
-    //   .then(values => console.log(values));
-    //
-
-
-
-
-      // Promise.all(
-      //   res.match.map(issueId => rp(jiraRequest(issueId)))
-      // )
-      //   .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-
+      .then(issueIds => Promise.all(issueIds.map(issueId => rp(jiraRequest(issueId)))))
+      .then(values => values.length > 0 ? robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}) : null);
   });
 };
 
