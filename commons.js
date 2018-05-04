@@ -1,4 +1,5 @@
 const {promisify} = require('util');
+const client = require('redis').createClient(process.env.REDISCLOUD_URL);
 const mgetAsync = promisify(client.mget).bind(client);
 const _ = require("underscore");
 
