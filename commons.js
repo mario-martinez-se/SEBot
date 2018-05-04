@@ -12,5 +12,6 @@ module.exports = {
     keys.map(key => client.set(`${key}:${channel}`, "OK", "EX", brain.get(`SILENT_FOR:${channel}`)||this.DEFAULT_MUTE_PERIOD));
     return keys;
   }),
+  getMutePeriod: (brain) => brain.get(`SILENT_FOR:${channel}`)||this.DEFAULT_MUTE_PERIOD,
   DEFAULT_MUTE_PERIOD: 30
 };

@@ -13,7 +13,7 @@ module.exports = (robot) => {
   });
 
   robot.respond(/(.*)(?:config|configuration)(.*)/i, [], (res) => {
-    res.send(`I have been told not to repeat myself for ${robot.brain.get("SILENT_FOR:"+res.message.room)||commons.DEFAULT_MUTE_PERIOD} secs in this channel`);
+    res.send(`I have been told not to repeat myself for ${commons.getMutePeriod(robot.brain)} secs in this channel`);
   });
 
   robot.respond(/help/i, [], (res) => {
@@ -21,7 +21,7 @@ module.exports = (robot) => {
   });
 
   robot.respond(/(?:hi|hello)/i, [], (res) => {
-    res.send(`:wave:Hello! I am SEBot. I can provide extended information about Jira tickets and GitHub Pull Requests whenever I detect you are talking about them. I won't repeat the same for at least ${robot.brain.get("SILENT_FOR:"+res.message.room)||commons.DEFAULT_MUTE_PERIOD} seconds, but if I get too much repetitive, you can just ask me "@sebot don't repeat for X minutes".`)
+    res.send(`:wave:Hello! I am SEBot. I can provide extended information about Jira tickets and GitHub Pull Requests whenever I detect you are talking about them. I won't repeat the same for at least ${commons.getMutePeriod(robot.brain)} seconds, but if I get too much repetitive, you can just ask me "@sebot don't repeat for X minutes".`)
   });
 
   robot.error((error, res) => {
