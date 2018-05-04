@@ -19,7 +19,6 @@
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.1",
     "hubot-slack": "^4.4.0",
-    "moment-parser": "^0.3.0",
     "nodejs-base64-encode": "0.0.2",
     "redis": "^2.8.0",
     "request-promise": "^4.2.2",

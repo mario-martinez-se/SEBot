@@ -1,8 +1,10 @@
-var parser = require('moment-parser');
 
 module.exports = (robot) => {
   const regex = /be quiet for (.*)/i;
   robot.respond(regex, [], (res)=> {
-    res.send(`Ok: ${parser.parseDuration(res.match[1])}`)
+
+    const secs = match[1];
+    robot.brain.set(`SILENT_FOR:${res.message.room}`, secs);
+    res.send(`Ok! I won't repeat myself for at least ${secs} secs in this channel`);
   });
 };
