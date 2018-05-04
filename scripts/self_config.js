@@ -19,4 +19,8 @@ module.exports = (robot) => {
   robot.respond(/help/i, [], (res) => {
     res.send(`Hey, I can get information about jira tickets and github pull requests when I see you are talking about them, but if I repeat myself too much, you can just let me know ("@sebot don't repeat for X minutes").\nAlso, if you want to know for how long I won't repeat myself in this channel, you can just ask "@sebot what's your config?"`);
   });
+
+  robot.respond(/(?:hi|hello)/i, [], () => {
+    res.send(`Hello! I am SEBot. I can provide extended information about Jira tickets and GitHub Pull Requests whenever I detect you are talking about them. I won't repeat the same at least after ${robot.brain.get("SILENT_FOR:"+res.message.room)||commons.DEFAULT_MUTE_PERIOD} seconds, but if I get too much repetitive, you can just ask me "@sebot don't repeat for X minutes".`)
+  })
 };
