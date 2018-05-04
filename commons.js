@@ -1,3 +1,4 @@
+const {promisify} = require('util');
 const mgetAsync = promisify(client.mget).bind(client);
 const _ = require("underscore");
 
