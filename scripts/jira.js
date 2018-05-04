@@ -16,7 +16,7 @@ module.exports = (robot) => {
   robot.hear(regex, [], (res)=> {
 
 
-    client.mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
+    mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
       .then(values => console.log(values));
 
     // Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
