@@ -2,7 +2,7 @@ const rp = require('request-promise');
 const encode = require('nodejs-base64-encode');
 const {promisify} = require('util');
 const client = require('redis').createClient(process.env.REDISCLOUD_URL);
-const getAsync = promisify(client.get).bind(client);
+const mgetAsync = promisify(client.mget).bind(client);
 const _ = require("underscore");
 
 require('dotenv').config();
@@ -14,6 +14,10 @@ const MUTE_PERIOD_IN_SECS = 30;
 module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
+
+
+    client.mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
+      .then(values => console.log(values));
 
     // Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
     //   .then(values => _.zip(res.match, values))
