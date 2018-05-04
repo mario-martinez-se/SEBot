@@ -12,8 +12,7 @@ module.exports = (robot) => {
     }
   });
 
-  robot.respond(/config/i, [], (res) => {
-    console.log(robot.brain.set(`SILENT_FOR:${res.message.room}`));
-    res.send(`I won't repeat myself for ${robot.brain.set(`SILENT_FOR:${res.message.room}`)||commons.DEFAULT_MUTE_PERIOD} secs in this channel`)
+  robot.respond(/config/i, [], (res) =>
+    res.send(`I won't repeat myself for ${robot.brain.get(`SILENT_FOR:${res.message.room}`)||commons.DEFAULT_MUTE_PERIOD} secs in this channel`)
   });
 };
