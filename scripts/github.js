@@ -13,22 +13,8 @@ module.exports = (robot) => {
       .then(urls => urls.map(url => regex.exec(url)))
       .then(matches => matches.map (m => ({owner: m[1], repo: m[2], number: m[3]})))
       .then(data => data.filter(elem => elem.owner && elem.repo && elem.number))
-      .then(urlData => urlData.map(d => rp(githubRequest(d))))
-      .then(promises => Promise.all(promises))
-      .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}))
-
-    ;
-
-  //   Promise.all(
-  //     filterByExpirity(res.match, res.message.room)
-  //       .then(urls => urls.map(url => regex.exec(url)))
-  //       // .map(url => regex.exec(url))
-  //       .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
-  //       .filter(data => data.owner && data.repo && data.number)
-  //       .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
-  //   ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-
-
+      .then(urlData => Promise.all(urlData.map(d => rp(githubRequest(d)))))
+      .then(values => values.length > 0 ? robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}): null)
   });
 };
 
