@@ -4,12 +4,12 @@ const mgetAsync = promisify(client.mget).bind(client);
 const _ = require("underscore");
 
 module.exports = {
-  filterByExpirity: (allKeys, appendix, mute_period) =>
+  filterByExpirity: (allKeys, appendix, brain) =>
   mgetAsync(allKeys.map(key => `${key}:${appendix}`))
   .then(values => _.zip(allKeys, values))
   .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
   .then(keys => {
-    keys.map(key => client.set(`${key}:${appendix}`, "OK", "EX", mute_period));
+    keys.map(key => client.set(`${key}:${appendix}`, "OK", "EX", brain.get(`SILENT_FOR:${channel}`)||this.DEFAULT_MUTE_PERIOD));
     return keys;
   }),
   DEFAULT_MUTE_PERIOD: 30
