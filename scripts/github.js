@@ -8,13 +8,13 @@ module.exports = (robot) => {
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
 
-    Promise.all(
+
       res.match
         .map(url => regex.exec(url))
         .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
         .filter(data => data.owner && data.repo && data.number)
-        .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
-    ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+        .map(data => Promise.all(rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number}))))
+        .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
   });
 
 };
