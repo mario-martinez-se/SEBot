@@ -9,7 +9,7 @@ module.exports = (robot) => {
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
 
-    filterByExpirity(res.match, res.message.room)
+    filterByExpirity(res.match, res.message.room,  robot.brain.get(`SILENT_FOR:${res.message.room}`) || 30)
       .then(urls => urls.map(url => regex.exec(url)))
       .then(matches => matches.map (m => ({owner: m[1], repo: m[2], number: m[3]})))
       .then(data => data.filter(elem => elem.owner && elem.repo && elem.number))
