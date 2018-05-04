@@ -24,7 +24,7 @@ module.exports = (robot) => {
     res.send(`:wave:Hello! I am SEBot. I can provide extended information about Jira tickets and GitHub Pull Requests whenever I detect you are talking about them. I won't repeat the same for at least ${robot.brain.get("SILENT_FOR:"+res.message.room)||commons.DEFAULT_MUTE_PERIOD} seconds, but if I get too much repetitive, you can just ask me "@sebot don't repeat for X minutes".`)
   });
 
-  robot.error((error) => {
+  robot.error((error, res) => {
     res.send(`ERROR ${error}`);
   });
 };
