@@ -16,14 +16,17 @@ module.exports = (robot) => {
   robot.hear(regex, [], (res)=> {
 
 
-    mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
-      .then(values => _.zip(res.match, values))
-      .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
-      .then(issueIds => {
-        issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
-        return issueIds;
-      })
-      .then(issueIds => console.log(issueIds))
+    Promise.all(
+      mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
+        .then(values => _.zip(res.match, values))
+        .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
+        .then(issueIds => {
+          issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+          return issueIds;
+        })
+        .then(issueIds => issueIds.map(issueId => rp(jiraRequest(issueId))))
+        .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}))
+    )
     ;
 
     // Promise.all(res.match.map(issueId => getAsync(`${issueId}:${res.message.room}`)))
@@ -41,10 +44,10 @@ module.exports = (robot) => {
     //   }
     // });
 
-      Promise.all(
-        res.match.map(issueId => rp(jiraRequest(issueId)))
-      )
-        .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
+      // Promise.all(
+      //   res.match.map(issueId => rp(jiraRequest(issueId)))
+      // )
+      //   .then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
 
   });
 };
