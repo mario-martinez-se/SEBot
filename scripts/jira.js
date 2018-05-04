@@ -21,7 +21,7 @@ module.exports = (robot) => {
   });
 };
 
-const filterByExpirity = (allKeys, appendix) => mgetAsync(allKeys.map(key => `${key}:${res.message.room}`))
+const filterByExpirity = (allKeys, appendix) => mgetAsync(allKeys.map(key => `${key}:${appendix}`))
 //Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
   .then(values => _.zip(allKeys, values))
   //Get issueIds that have no key in redis [DEV-123]
