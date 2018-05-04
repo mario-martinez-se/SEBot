@@ -8,9 +8,8 @@ module.exports = (robot) => {
   const regexGeneral = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/g;
   const regex = /https:\/\/github.com\/([^\/]*)\/([^\/]*)\/pull\/(\d+)\/?/;
   robot.hear(regexGeneral, [], (res)=> {
-    console.log(res.match);
     Promise.all(
-      res.match
+      filterByExpirity(res.match, res.message.room)
         .map(url => regex.exec(url))
         .map(data => ({owner: data[1], repo: data[2], number: data[3]}))
         .filter(data => data.owner && data.repo && data.number)
