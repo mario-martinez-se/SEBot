@@ -4,7 +4,12 @@ module.exports = (robot) => {
   robot.respond(regex, [], (res)=> {
 
     const secs = res.match[1];
-    robot.brain.set(`SILENT_FOR:${res.message.room}`, secs);
-    res.send(`Ok! I won't repeat myself for at least ${secs} secs in this channel`);
+
+    if (!isNaN(secs)) {
+      robot.brain.set(`SILENT_FOR:${res.message.room}`, secs);
+      res.send(`Ok! I won't repeat myself for at least ${secs} secs in this channel`);
+    } else {
+      res.sed(`Sorry, I don't understand`);
+    }
   });
 };
