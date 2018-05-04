@@ -18,8 +18,7 @@ module.exports = (robot) => {
   //       .filter(data => data.owner && data.repo && data.number)
   //       .map(data => rp(githubRequest({owner: data.owner, repo: data.repo, number: data.number})))
   //   ).then(values => robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}));
-  // });
-
+  });
 };
 
 const githubRequest = (data) => ({
