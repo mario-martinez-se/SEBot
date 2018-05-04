@@ -15,20 +15,20 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-    filterByExpirity(res.match)
+    filterByExpirity(res.match, res.message.room)
       .then(issueIds => Promise.all(issueIds.map(issueId => rp(jiraRequest(issueId)))))
       .then(values => values.length > 0 ? robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}) : null);
   });
 };
 
-const filterByExpirity = (allKeys) => mgetAsync(allKeys.map(key => `${key}:${res.message.room}`))
+const filterByExpirity = (allKeys, appendix) => mgetAsync(allKeys.map(key => `${key}:${res.message.room}`))
 //Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
   .then(values => _.zip(allKeys, values))
   //Get issueIds that have no key in redis [DEV-123]
   .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
   .then(keys => {
     //Store new key in redis with expirity
-    keys.map(key => client.set(`${key}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+    keys.map(key => client.set(`${key}:${appendix}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
     return keys;
   });
 
