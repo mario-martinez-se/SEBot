@@ -4,6 +4,7 @@ const {promisify} = require('util');
 const client = require('redis').createClient(process.env.REDISCLOUD_URL);
 const mgetAsync = promisify(client.mget).bind(client);
 const _ = require("underscore");
+const filterByExpirity = require('../commons').filterByExpirity;
 
 require('dotenv').config();
 
@@ -20,17 +21,17 @@ module.exports = (robot) => {
       .then(values => values.length > 0 ? robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}) : null);
   });
 };
-
-const filterByExpirity = (allKeys, appendix) => mgetAsync(allKeys.map(key => `${key}:${appendix}`))
-//Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
-  .then(values => _.zip(allKeys, values))
-  //Get issueIds that have no key in redis [DEV-123]
-  .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
-  .then(keys => {
-    //Store new key in redis with expirity
-    keys.map(key => client.set(`${key}:${appendix}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
-    return keys;
-  });
+//
+// const filterByExpirity = (allKeys, appendix) => mgetAsync(allKeys.map(key => `${key}:${appendix}`))
+// //Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
+//   .then(values => _.zip(allKeys, values))
+//   //Get issueIds that have no key in redis [DEV-123]
+//   .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
+//   .then(keys => {
+//     //Store new key in redis with expirity
+//     keys.map(key => client.set(`${key}:${appendix}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+//     return keys;
+//   });
 
 const jiraRequest = (issueId) => ({
   method: "GET",
