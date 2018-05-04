@@ -15,21 +15,22 @@ module.exports = (robot) => {
   const regex = /DEV-\d+/g;
   robot.hear(regex, [], (res)=> {
 
-    //Get all keys from redis
-    mgetAsync(res.match.map(issueId => `${issueId}:${res.message.room}`))
-      //Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
-      .then(values => _.zip(res.match, values))
-        //Get issueIds that have no key in redis [DEV-123]
-      .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
-      .then(issueIds => {
-        //Store new key in redis with expirity
-        issueIds.map(issueId => client.set(`${issueId}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
-        return issueIds;
-      })
+    filterByExpirity(res.match)
       .then(issueIds => Promise.all(issueIds.map(issueId => rp(jiraRequest(issueId)))))
       .then(values => values.length > 0 ? robot.adapter.client.web.chat.postMessage(res.message.room, message(values), {as_user: true, unfurl_links: false, attachments: attachments(values)}) : null);
   });
 };
+
+const filterByExpirity = (allKeys) => mgetAsync(allKeys.map(key => `${key}:${res.message.room}`))
+//Match keys with issueIds [[DEV-123, null],[DEV-456, "OK"]]
+  .then(values => _.zip(allKeys, values))
+  //Get issueIds that have no key in redis [DEV-123]
+  .then(pairs => pairs.filter(pair => pair[1] == null).map(pair => pair[0]))
+  .then(keys => {
+    //Store new key in redis with expirity
+    keys.map(key => client.set(`${key}:${res.message.room}`, "OK", "EX", MUTE_PERIOD_IN_SECS));
+    return keys;
+  });
 
 const jiraRequest = (issueId) => ({
   method: "GET",
