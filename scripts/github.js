@@ -10,7 +10,7 @@ module.exports = (robot) => {
   robot.hear(regexGeneral, [], (res)=> {
 
     filterByExpirity(res.match, res.message.room)
-      .then(urls => urls.map(regex.exec(url)))
+      .then(urls => urls.map(url => regex.exec(url)))
       .then(matches => matches.map (m => ({owner: m[1], repo: m[2], number: m[3]})))
       .then(data => data.filter(elem => elem.owner && elem.repo && elem.number))
       .then(urlData => urlData.map(d => rp(githubRequest(d))))
