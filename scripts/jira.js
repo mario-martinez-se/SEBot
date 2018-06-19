@@ -39,7 +39,7 @@ const attachment = (data) => ({
   // Avatar url is protected :(
   // "author_icon": `${data.fields.assignee ? data.fields.assignee.avatarUrls["16x16"]: ''}`,
   "title_link": `${convertApiUrl(data.self, data.key)}`,
-  "text": `${data.fields.description.substring(0, 100)}`,
+  "text": `${data.fields.description.substring(0, 100)}...`,
   "fields": [
     {
       "title": "Status",
