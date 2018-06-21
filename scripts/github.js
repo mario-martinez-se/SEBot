@@ -50,7 +50,7 @@ const attachment = (data) => ({
   "author_icon": `${data.user.avatar_url}`,
   "title": `${data.title}`,
   "title_link": `${data.html_url}`,
-  "text": `${data.body}`,
+  "text": `${data.body.substring(0, 100)}...`,
   "fields": [
     {
       "title": "Status",
